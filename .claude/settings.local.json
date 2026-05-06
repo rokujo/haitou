@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npx next *)",
+      "Bash(node *)",
+      "WebSearch",
+      "WebFetch(domain:nextfunds.jp)",
+      "WebFetch(domain:globalxetfs.co.jp)",
+      "WebFetch(domain:www.solactive.com)",
+      "WebFetch(domain:legacy2.solactive.com)",
+      "WebFetch(domain:www.blackrock.com)",
+      "Bash(gh --version)"
+    ]
+  }
+}

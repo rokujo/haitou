@@ -1,0 +1,50 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# next.js
+.next/
+out/
+build/
+dist/
+
+# misc
+.DS_Store
+*.pem
+.vscode/
+.idea/
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# env
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.functions
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+
+# python / functions
+functions/venv/
+functions/__pycache__/
+functions/**/__pycache__/
+functions/.pytest_cache/
+functions/*.pyc
+
+# firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# generated SW
+public/firebase-messaging-sw.js

@@ -1,0 +1,17 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ユーザー自身のデータのみ読み書き可能
+    match /users/{uid}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // ETF構成銘柄キャッシュ。読み書きとも認証済みユーザーに許可
+    // (個人運用想定。マルチテナントで運用する場合は Functions/Admin SDK のみに制限すること)
+    match /etf_cache/{etfCode} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+  }
+}
