@@ -6,6 +6,7 @@ from datetime import date, datetime, timezone, timedelta
 
 from firebase_admin import firestore
 from firebase_functions import scheduler_fn, https_fn
+from firebase_functions.options import CorsOptions
 
 from holiday import is_business_day
 from scraper import fetch_stock
@@ -71,7 +72,7 @@ def _process_user(uid: str) -> dict:
     return {"uid": uid, "count": len(results)}
 
 
-@scheduler_fn.on_schedule(schedule="every day 06:40", timezone=scheduler_fn.Timezone("Asia/Tokyo"))
+@scheduler_fn.on_schedule(schedule="every day 15:40", timezone="Asia/Tokyo")
 def daily_yield_fetch(event: scheduler_fn.ScheduledEvent) -> None:
     today = datetime.now(JST).date()
     if not is_business_day(today):
@@ -88,7 +89,9 @@ def daily_yield_fetch(event: scheduler_fn.ScheduledEvent) -> None:
             logger.exception("Failed to process user %s: %s", u.id, e)
 
 
-@https_fn.on_request()
+@https_fn.on_request(
+    cors=CorsOptions(cors_origins=["*"], cors_methods=["POST", "OPTIONS"]),
+)
 def manual_trigger(req: https_fn.Request) -> https_fn.Response:
     """開発用の手動トリガー。?userId=<uid> でそのユーザーのみ実行。
     userId 未指定なら全ユーザーを処理する。営業日チェックはスキップ。

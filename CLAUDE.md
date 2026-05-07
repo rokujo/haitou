@@ -234,8 +234,7 @@ from scheduler import daily_yield_fetch, manual_trigger
 ### `scheduler.py` — daily_yield_fetch + manual_trigger
 
 ```python
-@scheduler_fn.on_schedule(schedule="every day 06:40",
-                          timezone=scheduler_fn.Timezone("Asia/Tokyo"))
+@scheduler_fn.on_schedule(schedule="every day 15:40", timezone="Asia/Tokyo")
 def daily_yield_fetch(event):
     # 1. holiday.py で営業日チェック → 休業日ならスキップ
     # 2. /users コレクションを走査して各ユーザーごとに _process_user を実行

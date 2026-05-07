@@ -42,6 +42,11 @@ self.addEventListener("notificationclick", (event) => {
   const url = event.notification.data?.url ?? "/";
   event.waitUntil(clients.openWindow(url));
 });
+
+// PWA installability の要件: fetch ハンドラを持つこと（中身はパススルー）
+self.addEventListener("fetch", () => {
+  // no-op — ブラウザのデフォルトネットワーク取得に任せる
+});
 `;
 
 const out = path.join(root, "public", "firebase-messaging-sw.js");
