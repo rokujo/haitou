@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import os
 
 from firebase_admin import firestore, messaging
 
@@ -28,15 +29,22 @@ def notify_user(uid: str, results: list[dict], threshold: float) -> None:
     top = candidates[0]
     body = f"割安候補 {len(candidates)}件 | {top['name']} {top['gap']:+.2f}% など"
 
+    # 通知タップ先URL。WebpushFCMOptions.link は絶対HTTPS URL必須なので、
+    # APP_BASE_URL 環境変数（functions/.env で設定）から取得。未設定なら省略。
+    app_base_url = os.environ.get("APP_BASE_URL", "").strip()
+    webpush_config = None
+    if app_base_url.startswith("https://"):
+        webpush_config = messaging.WebpushConfig(
+            fcm_options=messaging.WebpushFCMOptions(link=app_base_url),
+        )
+
     message = messaging.MulticastMessage(
         tokens=tokens,
         notification=messaging.Notification(
             title="📊 配当利回りウォッチャー",
             body=body,
         ),
-        webpush=messaging.WebpushConfig(
-            fcm_options=messaging.WebpushFCMOptions(link="/"),
-        ),
+        webpush=webpush_config,
     )
     response = messaging.send_each_for_multicast(message)
 

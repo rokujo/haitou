@@ -17,7 +17,7 @@ export default function StatusBar({ uid }: { uid: string }) {
       const res = await fetch(`${url}?userId=${encodeURIComponent(uid)}`, {
         method: "POST",
       });
-      setMsg(res.ok ? "取得を開始しました" : `失敗: ${res.status}`);
+      setMsg(res.ok ? "取得完了" : `失敗: ${res.status}`);
     } catch (e) {
       setMsg(`エラー: ${(e as Error).message}`);
     } finally {
